@@ -154,13 +154,4 @@ cd ~/PX4-Autopilot
 
 ## 测试效果
 
-<!-- 飞行测试录屏（原文件 VID_20260525_175015.mp4）体积较大，建议上传到 GitHub Release 或视频平台后在此处贴链接 -->
-
----
-
-## 参考资料
-
-- [PX4 官方文档：HITL vs SITL](https://docs.px4.io/main/en/simulation/hitl#hitl-vs-sitl)
-- [CSDN：PX4 HITL 配置教程](https://blog.csdn.net/weixin_42037083/article/details/137450308)
-- [知乎：PX4 硬件在环仿真](https://zhuanlan.zhihu.com/p/1965511743506716001)
-- [B 站：超维小课堂（四）PX4 软件硬件在环仿真](https://www.bilibili.com/video/BV1W14y117CF/)
+演示视频（哔哩哔哩）：<!-- 待补充：把 B 站视频链接贴到这一行 -->
