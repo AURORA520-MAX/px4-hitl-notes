@@ -2,7 +2,7 @@
 
 在 Ubuntu 22.04 + QGroundControl 下，为 **Pixhawk 6C mini** 飞控搭建 **PX4 HITL（Hardware-In-the-Loop，硬件在环）** 仿真环境，通过 jMAVSim 与实机飞控联调，实现遥控器控制下的仿真飞行测试。
 
-> HITL 与 SITL 的区别：SITL 是纯软件仿真，飞控逻辑也跑在电脑上；HITL 则是**真实飞控硬件**运行固件，由电脑上的仿真器提供传感器数据、并接收飞控输出的执行器指令，因此可以验证真实固件的模块状态与参数配置。
+> **HITL 与 SITL 的区别**：SITL 是纯软件仿真，飞控逻辑也跑在电脑上；HITL 则是**真实飞控硬件**运行固件，由电脑上的仿真器提供传感器数据、并接收飞控输出的执行器指令，因此可以验证真实固件的模块状态与参数配置。
 
 ---
 
@@ -32,6 +32,8 @@ HITL 仿真必需的核心模块是 `pwm_out_sim`，**它不会默认集成在�
 ```bash
 pwm_out_sim status
 ```
+
+![固件支持 HITL 仿真](images/02-firmware-module-check.png)
 
 4. 结果判断：
 
@@ -68,15 +70,34 @@ git submodule update --init --recursive Tools/simulation/jmavsim/jMAVSim
 
 1. 使用 USB 数据线，将 Pixhawk 6C mini 飞控与电脑连接
 2. 在 QGC 中选择适配的 **HITL 机型**，点击应用并重启，等待飞控重启生效
+
+![选择 HITL 机型](images/03-airframe-select-1.png)
+
+![应用并重启](images/03-airframe-select-2.png)
+
 3. 开启**硬件在环仿真模式**
+
+![开启硬件在环仿真模式](images/04-hitl-mode-1.png)
+
+![HITL 模式确认](images/04-hitl-mode-2.png)
 
 ### 4.2 关闭自动连接，防止端口抢占
 
 关闭 QGC 自动连接 Pixhawk 的功能，避免地面站抢占飞控 USB 端口，导致 jMAVSim 无法连接飞控、仿真启动失败。
 
+![关闭自动连接](images/05-autoconnect-off-1.png)
+
+![自动连接已关闭](images/05-autoconnect-off-2.png)
+
 ### 4.3 手动配置飞控连接参数
 
 手动添加 Pixhawk 飞控连接，严格匹配 **连接类型、串口端口、波特率** 参数。参数错误会导致地面站连接失败、仿真异常。
+
+![手动添加飞控连接](images/06-manual-link-1.png)
+
+![连接类型与串口端口](images/06-manual-link-2.png)
+
+![波特率配置](images/06-manual-link-3.png)
 
 > ⚠️ 注意：仅配置手动连接参数，**切勿开启自动连接**，否则会挤占仿真端口。
 
@@ -90,6 +111,10 @@ git submodule update --init --recursive Tools/simulation/jmavsim/jMAVSim
 | --- | --- | --- |
 | `COM_RC_IN_MODE` | `3` | RC or MAVLink keep first，优先遥控器 / MAVLink 控制 |
 | `NAV_RCL_ACT` | `0` | Disabled，关闭仿真模式下的丢控失效保护 |
+
+![COM_RC_IN_MODE = 3](images/07-param-COM_RC_IN_MODE.png)
+
+![NAV_RCL_ACT = 0](images/08-param-NAV_RCL_ACT.png)
 
 修改完成后保存参数，固件配置全部完成。
 
@@ -107,8 +132,13 @@ cd ~/PX4-Autopilot
 ./Tools/simulation/jmavsim/jmavsim_run.sh -q -s -d /dev/ttyACM0 -b 921600 -r 250
 ```
 
+![jMAVSim 启动，等待 QGC 转发飞控 MAVLink](images/09-jmavsim-start.png)
+
 3. 仿真程序启动成功后，**再打开 QGC 地面站**
 4. **仿真连通性验证**：查看 QGC 界面 MAVLink 数据状态，出现对应连通标识即代表仿真与飞控通信成功
+
+![QGC 中 MAVLink 连通状态](images/10-mavlink-connected.png)
+
 5. 仿真就绪，可通过**遥控器控制仿真无人机完成飞行测试**
 
 ---
@@ -124,7 +154,7 @@ cd ~/PX4-Autopilot
 
 ## 测试效果
 
-<!-- 建议在这里补 1~2 张 QGC MAVLink 连通截图，以及一段飞行测试录屏（大文件建议放 GitHub Release 或压缩后提交） -->
+<!-- 飞行测试录屏（原文件 VID_20260525_175015.mp4）体积较大，建议上传到 GitHub Release 或视频平台后在此处贴链接 -->
 
 ---
 
